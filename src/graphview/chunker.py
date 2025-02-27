@@ -13,6 +13,9 @@ class Chunk:
     content: str = ""
     line_number: int = 0
 
+    def id(self):
+        return f'{self.path}#{self.header}'
+
 
 def chapters_from_file(file_path: Path) -> list[Chunk]:
     lines = []
@@ -51,7 +54,6 @@ def chapters_from_lines(lines: list[str], file_path: Path) -> list[Chunk]:
             )
         else:
             current_chunk_content.append(line)
-        print(line_number, line, current_chunk)
 
     content = "\n".join(current_chunk_content)
     current_chunk.content = content
