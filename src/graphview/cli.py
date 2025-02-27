@@ -1,5 +1,8 @@
 import typer
 from typing_extensions import Annotated
+from pathlib import Path
+
+import graphview.core as core
 
 app = typer.Typer(
     help="A tool to help you navigate your markdown notes.", no_args_is_help=True
@@ -26,17 +29,17 @@ def search_file(
     file_path: Annotated[str, typer.Argument(help="Path to plain text document")],
     line_number: int | None = None,
 ):
-    typer.echo(f"file {file_path} {line_number}")
+    core.search_file(file_path, line_number)
 
 
 @search_app.command("text", help="Search files based on the given QUERY")
 def search_text(query: str):
-    typer.echo("text")
+    core.search_text(query)
 
 
 @index_app.command("build", help="Build or rebuild the index in this directory")
 def index_build():
-    typer.echo("index build")
+    core.build_index(Path.cwd())
 
 
 def main():
