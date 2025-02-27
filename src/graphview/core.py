@@ -49,6 +49,7 @@ def build_index(dir: Path) -> None:
     db = storage.Storage()
     db.clear()
     chunks = []
+    print("Reading files...")
     for root, dirs, files in os.walk(dir):
         dirs[:] = [d for d in dirs if __is_valid_dir(d)]
         files[:] = [f for f in files if __is_valid_file(f)]
@@ -57,6 +58,7 @@ def build_index(dir: Path) -> None:
             file_path = Path(path)
             entry_chunks = chunker.chapters_from_file(file_path)
             chunks.extend(entry_chunks)
+    print("Indexing...")
     db.add(chunks)
 
 
