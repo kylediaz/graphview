@@ -6,7 +6,7 @@ import graphview.chunker as chunker
 import graphview.storage as storage
 
 
-def search_file(file_path: Path, line_number: int | None = 0) -> str | None:
+def search_file(file_path: Path, line_number: int | None = 0) -> tuple[int, str] | None:
     line_number = line_number if line_number else 0
     chunk = __get_chunk_at_line(file_path, line_number)
     return search_text(f"{chunk.header}\n{chunk.content}")
@@ -26,16 +26,21 @@ def __get_chunk_at_line(file_path: Path, line_number: int) -> chunker.Chunk:
     raise RuntimeError()
 
 
-def search_text(query: str) -> str | None:
+def search_text(query: str) -> tuple[int, str] | None:
     db = storage.Storage()
     results = db.search(query)
     results.sort(key=lambda r: r.distance)
 
-    dirs = [r.file_path for r in results]
+    # We can't get the index from fzf, so we need
+    # to embed the index in the string
+    dirs = [f'{i} {r.file_path}' for i, r in enumerate(results, start=1)]
     fzf = FzfPrompt()
     fzf_result = fzf.prompt(dirs)
     if len(fzf_result) == 1:
-        return fzf_result[0]
+        fzf_result: str = fzf_result[0]
+        index, path = fzf_result.split(" ", maxsplit=1)
+        line_number = results[int(index)-1].line_number
+        return (line_number, path)
     else:
         return None
 
