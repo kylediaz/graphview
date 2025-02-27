@@ -29,12 +29,16 @@ def search_file(
     file_path: Annotated[str, typer.Argument(help="Path to plain text document")],
     line_number: int | None = None,
 ):
-    core.search_file(file_path, line_number)
+    picked_dir = core.search_file(file_path, line_number)
+    if picked_dir:
+        print(picked_dir)
 
 
 @search_app.command("text", help="Search files based on the given QUERY")
 def search_text(query: str):
-    core.search_text(query)
+    picked_dir = core.search_text(query)
+    if picked_dir:
+        print(picked_dir)
 
 
 @index_app.command("build", help="Build or rebuild the index in this directory")
