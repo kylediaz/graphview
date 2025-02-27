@@ -15,6 +15,12 @@ automatically search using what you currently have open in the editor.
 graphview search file --line-number 50 my_note.md
 ```
 
+## Installation
+
+```bash
+pipx install git+https://github.com/kylediaz/graphview.git
+```
+
 ## Zed
 
 Add an entry to `tasks.json` that executes the following command:
