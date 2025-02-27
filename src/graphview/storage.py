@@ -27,7 +27,8 @@ class Storage:
 
     def search(self, query: str) -> list[SearchResult]:
         result = self.collection.query(
-            query_texts=[query], include=["metadatas", "distances"]
+            query_texts=[query], include=["metadatas", "distances"],
+            n_results=50
         )
         ids = result["ids"][0]
         metadatas = result["metadatas"][0]
