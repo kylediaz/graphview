@@ -24,8 +24,19 @@ class Storage:
             name="chunks"
         )
 
-    def search(self, query: str) -> list[Chunk]:
-        pass
+    def search(self, query: str) -> list[SearchResult]:
+        result = self.collection.query(
+            query_texts=[query], include=["metadatas", "distances"]
+        )
+        ids = result['ids'][0]
+        metadatas = result['metadatas'][0]
+        distances = result['distances'][0]
+
+        output = []
+        for _, metadata, distance in zip(ids, metadatas, distances):
+            search_result = SearchResult(metadata['file_path'], metadata['line_number'], distance)
+            output.append(search_result)
+        return output
 
     def clear(self) -> None:
         # this is a hack. sorry :)
