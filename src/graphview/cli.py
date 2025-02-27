@@ -29,7 +29,8 @@ def search_file(
     file_path: Annotated[str, typer.Argument(help="Path to plain text document")],
     line_number: int | None = None,
 ):
-    res = core.search_file(file_path, line_number)
+    path = Path(file_path)
+    res = core.search_file(path, line_number)
     if res:
         line_number, picked_dir = res
         print(f'{picked_dir}:{line_number}')
