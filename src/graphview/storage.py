@@ -45,7 +45,7 @@ class Storage:
     def add(self, chunks: list[Chunk]) -> None:
         ids = [chunk.id() for chunk in chunks]
         metadatas = [
-            {"path": str(chunk.path), "line_number": str(chunk.line_number)} for chunk in chunks
+            {"file_path": str(chunk.path), "line_number": str(chunk.line_number)} for chunk in chunks
         ]
         documents = [chunk.content for chunk in chunks]
         
